@@ -1,6 +1,6 @@
 {
   "name": "tetris",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "A minimal shopping list",
   "main": "main.js",
   "build": {
@@ -18,9 +18,7 @@
   ],
   "author": "zee-german",
   "license": "MIT",
-  "devDependencies": {
-    "electron": "~1.7.6",
-    "electron-builder": "^19.37.2"
-  },
-  "dependencies": {}
+  "dependencies": {
+    "electron": "^1.8.3"
+  }
 }
