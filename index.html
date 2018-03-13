@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Tetris</title>
+  <style media="screen">
+  html, body {
+    padding: 0;
+    margin: 0;
+  }
+  body {
+    display: flex;
+    padding-top: 1em;
+    flex-direction: row;
+    justify-content: center;
+    background: #202028;
+    /* background: url('./bg.jpg'); */
+    background-size: cover;
+    color: #fff;
+    font-family: sans-serif;
+    font-size: 2em;
+    text-align: center;
+  }
+  .info {
+    margin-left: 1em;
+  }
+  .overlay_pause {
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    /* height: 100vh; */
+    background: rgba(0,0,0,0.4);
+    width: 100vw;
+    position: absolute;
+    font-size: 2em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .hidden {
+    display: none;
+  }
+  </style>
+</head>
+
+<body>
+  <canvas id="tetris" width="240" height="400"></canvas>
+  <div class="info">
+    <canvas id="preview" width="80" height="80"></canvas>
+    <div id="score"></div>
+  </div>
+  <div class="overlay_pause hidden">GAME PAUSED</div>
+
+</body>
+<script>
+  // You can also require other files to run in this process
+  require('./renderer.js')
+</script>
+
+</html>

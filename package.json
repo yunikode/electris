@@ -1,0 +1,26 @@
+{
+  "name": "tetris",
+  "version": "0.1.0",
+  "description": "A minimal shopping list",
+  "main": "main.js",
+  "build": {
+    "appId": "com.digitaldiztortion.tetris"
+  },
+  "scripts": {
+    "start": "electron .",
+    "pack": "electron-builder --dir",
+    "dist": "NODE_ENV=production electron-builder"
+  },
+  "repository": "https://github.com/zee-german/tetris",
+  "keywords": [
+    "Electron",
+    "tetris"
+  ],
+  "author": "zee-german",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "~1.7.6",
+    "electron-builder": "^19.37.2"
+  },
+  "dependencies": {}
+}
