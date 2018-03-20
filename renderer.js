@@ -5,7 +5,7 @@ const { ipcRenderer } = electron
 const canvas = document.getElementById('tetris')
 const context = canvas.getContext('2d')
 
-const overlay_pause = document.getElementsByClassName('overlay_pause')[0]
+const overlay = document.querySelector('.overlay')
 
 const previewCanvas = document.getElementById('preview')
 const previewContext = previewCanvas.getContext('2d')
@@ -22,6 +22,8 @@ previewContext.fillRect(0,0,previewCanvas.width, previewCanvas.height)
 let previewPart;
 
 let _paused = true;
+let _gameOver = true
+
 
 function arenaSweep() {
   let rowCount = 1
@@ -132,9 +134,16 @@ function drawMatrix(matrix, offset,context) {
   })
 }
 
+function gameOver() {
+  _gameOver = !_gameOver
+  gamePause()
+  _gameOver ? overlay.innerText = `Game Over ${player.score} points` : ''
+}
+
 function gamePause() {
   _paused = !_paused
-  overlay_pause.classList.toggle('hidden')
+  overlay.innerText = 'Game Paused'
+  overlay.classList.toggle('hidden')
 }
 
 function merge(arena, player) {
@@ -155,6 +164,7 @@ function playerMove(dir) {
 }
 
 function playerDrop() {
+
   player.pos.y++
   if (collide(arena, player)) {
     player.pos.y--
@@ -173,10 +183,11 @@ function playerReset() {
   player.pos.y = 0
   player.pos.x = (arena[0].length / 2 | 0) - (player.matrix[0].length / 2 | 0)
   if (collide(arena, player)) {
+    gameOver()
     arena.forEach(row => row.fill(0))
     player.score = 0
     updateScore()
-    gamePause()
+
   }
 }
 
@@ -200,19 +211,25 @@ function resize() {
   const maxHeight = window.innerHeight
 
   const height = maxHeight - 80
-  const width = maxWidth - 140
+  const width = maxWidth * 2/3
 
   if (height / 20 < width / 12) {
     canvas.height = height
     canvas.width = 12 * height / 20
+    previewCanvas.height = 4 * height / 20
+    previewCanvas.width = 4 * height / 20
   } else {
     canvas.width = width
     canvas.height = 20 * width / 12
+    previewCanvas.height = width * 1/3
+    previewCanvas.width = width * 1/3
   }
 
   context.scale(canvas.width/12, canvas.width/12)
+  previewContext.scale(canvas.width/12, canvas.width/12)
 
   context.fillRect(0,0,width, height)
+  previewContext.fillRect(0,0,width,height)
 
 }
 
@@ -238,6 +255,7 @@ function rotate(matrix, dir) {
 
 let dropCounter = 0
 let dropInterval = 1000
+
 
 let lastTime = 0
 
@@ -294,7 +312,7 @@ document.addEventListener('keydown', event => {
   } else if (!!_paused && event.keyCode === 87) {
     playerRotate(1)
   } else if (event.keyCode === 32) {
-    gamePause()
+    !_gameOver ? gamePause() : ''
   }
 
 })
@@ -308,4 +326,7 @@ player.preview = createPiece(pieces[pieces.length * Math.random() | 0])
 playerReset()
 updateScore()
 
-ipcRenderer.on('game:new', () => update())
+ipcRenderer.on('game:new', () => {
+  update()
+  gameOver()
+})
