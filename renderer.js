@@ -19,11 +19,12 @@ context.fillRect(0,0,canvas.width, canvas.height)
 previewContext.fillStyle = '#000'
 previewContext.fillRect(0,0,previewCanvas.width, previewCanvas.height)
 
-let previewPart;
+let previewPart
 
-let _paused = true;
+let _paused = true
 let _gameOver = true
-
+let level = 1
+let pointFactor = 1
 
 function arenaSweep() {
   let rowCount = 1
@@ -37,8 +38,12 @@ function arenaSweep() {
     arena.unshift(row)
     ++y
 
-    player.score += rowCount * 10
+    player.score += Math.floor(rowCount * 10 * pointFactor)
     rowCount *= 2
+
+    if (Math.ceil(player.score) / 100 > level) {
+      levelUp()
+    }
   }
 }
 
@@ -137,13 +142,20 @@ function drawMatrix(matrix, offset,context) {
 function gameOver() {
   _gameOver = !_gameOver
   gamePause()
-  _gameOver ? overlay.innerText = `Game Over ${player.score} points` : ''
+  _gameOver ? overlay.innerText = `Game Over // Level ${level} // ${player.score} points` : ''
 }
 
 function gamePause() {
   _paused = !_paused
   overlay.innerText = 'Game Paused'
   overlay.classList.toggle('hidden')
+}
+
+function levelUp() {
+  level += 1
+  dropInterval -= 100
+  pointFactor *= 1.25
+  updateLevel()
 }
 
 function merge(arena, player) {
@@ -187,7 +199,9 @@ function playerReset() {
     arena.forEach(row => row.fill(0))
     player.score = 0
     updateScore()
-
+    dropInterval = 1000
+    level = 1
+    updateLevel()
   }
 }
 
@@ -274,10 +288,14 @@ function update(time = 0) {
   requestAnimationFrame(update)
 }
 
+function updateLevel() {
+  document.querySelector('.level').innerText = `Level ${level}`
+}
 
 function updateScore() {
     document.getElementById('score').innerText = player.score
 }
+
 
 const arena = createMatrix(12, 20)
 const previewPaint = createMatrix(4,4)

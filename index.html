@@ -10,10 +10,7 @@
     margin: 0;
   }
   body {
-    display: flex;
-    padding-top: 1em;
-    flex-direction: row;
-    justify-content: center;
+
     background: #202028;
     /* background: url('./bg.jpg'); */
     background-size: cover;
@@ -21,6 +18,11 @@
     font-family: sans-serif;
     font-size: 2em;
     text-align: center;
+  }
+  .container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
   }
   .info {
     margin-left: 1em;
@@ -47,14 +49,21 @@
   .show {
     display: flex;
   }
+  .level {
+    padding: .5em 0;
+    text-align: center;
+  }
   </style>
 </head>
 
 <body>
-  <canvas id="tetris" width="240" height="400"></canvas>
-  <div class="info">
-    <canvas id="preview" width="80" height="80"></canvas>
-    <div id="score"></div>
+  <div class="level">Level 1</div>
+  <div class="container">
+    <canvas id="tetris" width="240" height="400"></canvas>
+    <div class="info">
+      <canvas id="preview" width="80" height="80"></canvas>
+      <div id="score"></div>
+    </div>
   </div>
   <div class="overlay hidden">GAME PAUSED</div>
 
